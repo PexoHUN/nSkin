@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "nSkin",
+  "version": "1.7.1",
+  "description": "Az nCore webes felületének újraírása.",
+  "permissions": ["storage"],
+  "host_permissions": [
+    "https://ncore.pro/*",
+    "https://www.ncore.pro/*"
+  ],
+  "action": {
+    "default_title": "nSkin",
+    "default_popup": "src/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://ncore.pro/*",
+        "https://www.ncore.pro/*"
+      ],
+      "css": ["src/content.css"],
+      "js": ["src/content.js"],
+      "run_at": "document_start"
+    }
+  ]
+}
