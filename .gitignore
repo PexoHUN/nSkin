@@ -3,3 +3,4 @@ UJ_PROJEKT_PROMPT.md
 *.zip
 .playwright-mcp/
 __pycache__/
+store/

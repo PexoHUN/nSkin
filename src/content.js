@@ -2,6 +2,18 @@
   if (window.__nskinBoot) return;
   window.__nskinBoot = true;
 
+  const LOGO_SVG = `<svg viewBox="0 0 96 96" aria-hidden="true" focusable="false">
+    <defs>
+      <linearGradient id="nk-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#143844"/><stop offset="1" stop-color="#071017"/></linearGradient>
+      <linearGradient id="nk-teal" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#7af7e4"/><stop offset=".55" stop-color="#3de7d0"/><stop offset="1" stop-color="#2aa8e0"/></linearGradient>
+      <radialGradient id="nk-glow" cx=".25" cy=".15" r=".8"><stop offset="0" stop-color="#3de7d0" stop-opacity=".28"/><stop offset="1" stop-color="#3de7d0" stop-opacity="0"/></radialGradient>
+    </defs>
+    <rect width="96" height="96" rx="24" fill="url(#nk-bg)"/>
+    <rect width="96" height="96" rx="24" fill="url(#nk-glow)"/>
+    <rect x=".75" y=".75" width="94.5" height="94.5" rx="23.25" fill="none" stroke="#3de7d0" stroke-opacity=".35" stroke-width="1.5"/>
+    <path d="M29 69V27l38 42V27" fill="none" stroke="url(#nk-teal)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>`;
+
   const UI_CSS = `
     :host { all: initial; }
     * { box-sizing: border-box; }
@@ -46,11 +58,14 @@
     .login-card > .brand .brand-text { display: flex; flex-direction: column; gap: 2px; }
     .mark {
       width: 48px; height: 48px; border-radius: 14px;
-      display: grid; place-items: center;
-      background: #0f2430; color: #3de7d0; font-weight: 800; font-size: 24px;
-      box-shadow: inset 0 0 0 1px rgba(61,231,208,.5), 0 0 24px rgba(61,231,208,.15);
+      display: block; flex: none;
+      box-shadow: 0 0 24px rgba(61,231,208,.15);
       user-select: none; -webkit-user-select: none; cursor: default;
     }
+    .mark svg { display: block; width: 100%; height: 100%; }
+    .side .brand { gap: 10px; }
+    .side .mark { width: 34px; height: 34px; border-radius: 10px; box-shadow: 0 0 16px rgba(61,231,208,.12); }
+    .side .brand strong { font-size: 17px; }
     .brand strong { display: block; font-size: 20px; letter-spacing: .02em; }
     .brand small, .hint { color: #8aa4b5; font-size: 12px; }
     .login-card h1 {
@@ -779,7 +794,7 @@
     }, [menuIcon(item.text), item.text])));
     const side = el("aside", { class: "side" }, [
       el("div", { class: "brand" }, [
-        el("span", { class: "mark", "aria-hidden": "true", text: "N" }),
+        el("span", { class: "mark", "aria-hidden": "true", html: LOGO_SVG }),
         el("span", { class: "brand-text" }, [el("strong", { text: "nSkin" }), el("small", { text: "nCore, újraírva" })])
       ]),
       menu.length ? el("div", { class: "label", text: "Menü" }) : null,
@@ -1107,7 +1122,7 @@
       shadow.append(el("style", { text: UI_CSS }), el("div", { class: "login-screen" }, [
         el("div", { class: "login-card" }, [
           el("div", { class: "brand" }, [
-            el("span", { class: "mark", "aria-hidden": "true", text: "N" }),
+            el("span", { class: "mark", "aria-hidden": "true", html: LOGO_SVG }),
             el("span", { class: "brand-text" }, [el("strong", { text: "nSkin" }), el("small", { text: "nCore" })])
           ]),
           el("h1", { text: "Belépés" }),
@@ -1144,7 +1159,7 @@
     const shadow = host.attachShadow({ mode: "open" });
     const card = el("div", { class: "login-card" }, [
       el("div", { class: "brand" }, [
-        el("span", { class: "mark", "aria-hidden": "true", text: "N" }),
+        el("span", { class: "mark", "aria-hidden": "true", html: LOGO_SVG }),
         el("span", { class: "brand-text" }, [
           el("strong", { text: "nSkin" }),
           el("small", { text: "nCore" })
@@ -1264,7 +1279,7 @@
         catSrc: cat ? cat.src : "",
         cover: /^https:\/\//.test(cover) ? cover : "",
         alt: alt ? alt.getAttribute("title").trim() : "",
-        rating: imdb ? ((imdb.textContent.match(/(\d+(?:[.,]\d+)?)/) || [])[1] || "") : "",
+        rating: validRating(imdb ? (imdb.textContent.match(/(\d+(?:[.,]\d+)?)/) || [])[1] : ""),
         date: field(".box_feltoltve2, .box_feltoltve"),
         size: field(".box_meret2, .box_meret"),
         seed: field(".box_s2 a, .box_s a, .box_s2, .box_s"),
@@ -1301,6 +1316,10 @@
     return match
       ? el("strong", {}, [match[1], el("span", { class: "dec", text: match[2] })])
       : el("strong", { text: value });
+  }
+
+  function validRating(text) {
+    return parseFloat(String(text || "").replace(",", ".")) > 0 ? String(text).trim() : "";
   }
 
   function resolutionOf(text) {
@@ -1806,7 +1825,7 @@
     const leech = factText("leecherek") || "0";
     const uploaded = factText("feltöltve");
     const res = resolutionOf(release);
-    const rating = infoText("imdb értékelés");
+    const rating = validRating(infoText("imdb értékelés"));
     const imdbLink = info["imdb link"] && info["imdb link"].querySelector("a");
     const otherLink = info["egyéb link"] && info["egyéb link"].querySelector("a");
     const tagLinks = info["címkék"] ? [...info["címkék"].querySelectorAll("a")] : [];
@@ -1943,9 +1962,20 @@
     document.documentElement.append(bar);
   }
 
+  function setFavicon() {
+    const head = document.head || document.documentElement;
+    head.querySelectorAll('link[rel~="icon"], link[rel="shortcut icon"]').forEach((link) => link.remove());
+    head.append(el("link", {
+      rel: "icon",
+      type: "image/svg+xml",
+      href: "data:image/svg+xml," + encodeURIComponent(LOGO_SVG.replace("<svg ", '<svg xmlns="http://www.w3.org/2000/svg" '))
+    }));
+  }
+
   function build() {
     const kind = detect();
     if (kind === "skip") return false;
+    setFavicon();
     if (document.getElementById("nskin-host")) return true;
     if (kind === "login") {
       renderLogin();

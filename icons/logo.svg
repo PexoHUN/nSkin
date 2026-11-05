@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96">
+  <defs>
+    <linearGradient id="nk-bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#143844"/>
+      <stop offset="1" stop-color="#071017"/>
+    </linearGradient>
+    <linearGradient id="nk-teal" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#7af7e4"/>
+      <stop offset=".55" stop-color="#3de7d0"/>
+      <stop offset="1" stop-color="#2aa8e0"/>
+    </linearGradient>
+    <radialGradient id="nk-glow" cx=".25" cy=".15" r=".8">
+      <stop offset="0" stop-color="#3de7d0" stop-opacity=".28"/>
+      <stop offset="1" stop-color="#3de7d0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="96" height="96" rx="24" fill="url(#nk-bg)"/>
+  <rect width="96" height="96" rx="24" fill="url(#nk-glow)"/>
+  <rect x=".75" y=".75" width="94.5" height="94.5" rx="23.25" fill="none" stroke="#3de7d0" stroke-opacity=".35" stroke-width="1.5"/>
+  <path d="M29 69V27l38 42V27" fill="none" stroke="url(#nk-teal)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

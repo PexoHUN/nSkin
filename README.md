@@ -10,4 +10,4 @@ Az nCore webes felületének újraírása. Alapból jelszót nem tárol; csak ha
 
 A popup kapcsolója vagy a **Klasszikus nézet** gomb visszaállítja az eredeti UI-t.
 
-Részletes agent-kontextus: `scratchpad.md`.
+Adatvédelmi nyilatkozat: [PRIVACY.md](PRIVACY.md)
